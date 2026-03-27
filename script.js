@@ -178,7 +178,7 @@ function renderDashboard() {
   const filteredRecords = applyFilters(recordsWithRules);
   const validRecords = filteredRecords.filter((record) => record.isValidRecord);
   const alertRecords = validRecords.filter((record) => record.isAlert);
-  const analysisRecords = validRecords.filter((record) => record.speed >= state.config.minAnalysisSpeed);
+  const analysisRecords = getAnalysisRecords(validRecords);
 
   updateHeaderMeta(filteredRecords, analysisRecords, alertRecords);
   renderStatCards(filteredRecords, validRecords, analysisRecords, alertRecords);
@@ -272,7 +272,9 @@ function renderStatCards(filteredRecords, validRecords, analysisRecords, alertRe
 }
 
 function renderCharts(analysisRecords, alertRecords) {
-  dom.severityChartNote.textContent = `Considera velocidades a partir de ${formatSpeed(state.config.minAnalysisSpeed)} km/h.`;
+  dom.severityChartNote.textContent = usesPerEventSpeedLimit()
+    ? "Considera o limite da via de cada evento."
+    : `Considera velocidades a partir de ${formatSpeed(state.config.minAnalysisSpeed)} km/h.`;
   dom.topSpeedByHourNote.textContent = "Passe o mouse na linha para ver a velocidade.";
 
   const plateAlertRows = topCounts(alertRecords, (record) => record.plate, 7);
@@ -306,7 +308,7 @@ function renderCharts(analysisRecords, alertRecords) {
     topSpeedByHourRows,
     {
       datasetLabel: "Maior velocidade",
-      emptyMessage: `Sem registros a partir de ${formatSpeed(state.config.minAnalysisSpeed)} km/h.`,
+      emptyMessage: getAnalysisEmptyMessage(),
       borderColor: "rgba(15, 91, 99, 0.92)",
       backgroundColor: "rgba(15, 91, 99, 0.14)",
       tooltipLabelFormatter: (value) => `${formatSpeed(value)} km/h`,
@@ -339,7 +341,7 @@ function updateHeaderMeta(filteredRecords = null, analysisRecords = null, alertR
     ? sourceFiles.join(", ")
     : "Sem origem informada";
   dom.activeRules.textContent = usesPerEventSpeedLimit()
-    ? `Minimo ${formatSpeed(state.config.minAnalysisSpeed)} km/h | Limite por evento da planilha`
+    ? "Analise baseada no limite da via de cada evento"
     : `Minimo ${formatSpeed(state.config.minAnalysisSpeed)} km/h | Limite ${formatSpeed(state.config.speedLimit)} km/h`;
 
   if (!filteredRecords || !analysisRecords || !alertRecords) {
@@ -423,7 +425,7 @@ function renderDoughnutChart(elementId, rows) {
       canvas,
       !window.Chart
         ? "Chart.js nao foi carregado."
-        : `Sem registros a partir de ${formatSpeed(state.config.minAnalysisSpeed)} km/h.`,
+        : getAnalysisEmptyMessage(),
     );
     destroyChart(elementId);
     return;
@@ -775,6 +777,18 @@ function usesPerEventSpeedLimit() {
   return Boolean(state.payload?.config?.usesPerEventSpeedLimit);
 }
 
+function getAnalysisRecords(validRecords) {
+  return usesPerEventSpeedLimit()
+    ? validRecords
+    : validRecords.filter((record) => record.speed >= state.config.minAnalysisSpeed);
+}
+
+function getAnalysisEmptyMessage() {
+  return usesPerEventSpeedLimit()
+    ? "Sem eventos validos no periodo atual."
+    : `Sem registros a partir de ${formatSpeed(state.config.minAnalysisSpeed)} km/h.`;
+}
+
 function setLoadingState() {
   dom.generatedAt.textContent = "Carregando...";
   dom.sourceFiles.textContent = "Carregando...";
@@ -822,6 +836,7 @@ function formatNumber(value) {
 function formatSpeed(value) {
   return Number.isInteger(value) ? String(value) : value.toFixed(1).replace(".", ",");
 }
+
 
 
 function describeTopSpeedPlates(plates) {

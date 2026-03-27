@@ -26,8 +26,8 @@
         <p class="eyebrow">Monitoramento estatico da frota</p>
         <h1>Analise de velocidade para operacao e alerta</h1>
         <p class="hero-text">
-          Painel pronto para GitHub Pages, lendo apenas arquivos ja tratados dentro do projeto.
-          As regras podem ser ajustadas sem alterar a base original.
+          Esta analise compara a velocidade media de cada evento com o limite da via informado na planilha,
+          classifica a gravidade do excesso e consolida os resultados por placa, motorista, data e horario.
         </p>
       </div>
 
@@ -121,7 +121,7 @@
       <article class="stat-card panel">
         <span class="stat-label">Media de velocidade</span>
         <strong id="averageSpeedCard">0 km/h</strong>
-        <p>Media calculada apenas com registros acima da velocidade minima de analise.</p>
+        <p>Media calculada com os eventos considerados na visao atual.</p>
       </article>
 
       <article class="stat-card panel">
@@ -172,7 +172,7 @@
             <p class="section-kicker">Grafico</p>
             <h2>Distribuicao por severidade</h2>
           </div>
-          <p class="section-note" id="severityChartNote">Considera velocidades a partir de 0 km/h.</p>
+          <p class="section-note" id="severityChartNote">Considera o limite da via em cada evento.</p>
         </div>
         <div class="chart-frame">
           <canvas id="severityChart"></canvas>
