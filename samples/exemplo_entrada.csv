@@ -1,0 +1,25 @@
+Veiculo;Placa;Data/Hora;Velocidade;Evento;Endereco
+FH 540 01;JRF1A23;21/03/2026 06:12:14;72 Km/h;Deslocamento;BR-381 - Betim-MG
+FH 540 01;JRF1A23;21/03/2026 06:48:59;88 Km/h;Excesso de velocidade;BR-381 - Betim-MG
+FH 540 01;JRF1A23;22/03/2026 04:35:35;96 Km/h;Excesso de velocidade;Av. Marginal - Divinopolis-MG
+FH 540 02;JRF4B56;21/03/2026 07:11:28;81 Km/h;Excesso de velocidade;MG-050 - Itauna-MG
+FH 540 02;JRF4B56;22/03/2026 09:15:10;84 Km/h;Excesso de velocidade;Anel Rodoviario - Belo Horizonte-MG
+FH 540 02;JRF4B56;23/03/2026 05:15:10;45 Km/h;Parada breve;BR-262 - Juatuba-MG
+Atego 2430;JRF7C89;21/03/2026 08:04:40;0 Km/h;Ignicao ligada;Av. JK - Contagem-MG
+Atego 2430;JRF7C89;22/03/2026 10:20:05;53 Km/h;Deslocamento;BR-040 - Sete Lagoas-MG
+Atego 2430;JRF7C89;23/03/2026 11:44:02;91 Km/h;Excesso de velocidade;BR-040 - Sete Lagoas-MG
+VM 270;JRF2D34;21/03/2026 05:41:17;79 Km/h;Deslocamento;BR-262 - Nova Serrana-MG
+VM 270;JRF2D34;22/03/2026 12:18:42;83 Km/h;Excesso de velocidade;BR-262 - Luz-MG
+VM 270;JRF2D34;23/03/2026 13:05:19;102 Km/h;Excesso severo;BR-262 - Bom Despacho-MG
+Actros 2651;JRF9E12;21/03/2026 14:02:11;77 Km/h;Deslocamento;BR-381 - Sabara-MG
+Actros 2651;JRF9E12;22/03/2026 14:55:31;85 Km/h;Excesso de velocidade;BR-381 - Joao Monlevade-MG
+Actros 2651;JRF9E12;23/03/2026 15:26:08;93 Km/h;Excesso de velocidade;BR-381 - Joao Monlevade-MG
+Cargo 2429;JRF8F67;21/03/2026 09:24:10;68 Km/h;Deslocamento;MG-424 - Pedro Leopoldo-MG
+Cargo 2429;JRF8F67;22/03/2026 16:14:50;82 Km/h;Excesso de velocidade;MG-424 - Matozinhos-MG
+Cargo 2429;JRF8F67;23/03/2026 17:40:21;87 Km/h;Excesso de velocidade;MG-010 - Vespasiano-MG
+FH 460;JRF6G45;21/03/2026 18:30:05;89 Km/h;Excesso de velocidade;BR-040 - Ribeirao das Neves-MG
+FH 460;JRF6G45;22/03/2026 19:55:17;92 Km/h;Excesso de velocidade;BR-040 - Curvelo-MG
+FH 460;JRF6G45;23/03/2026 20:15:44;76 Km/h;Deslocamento;BR-040 - Curvelo-MG
+Delivery 11180;JRF3H78;22/03/2026 06:58:09;51 Km/h;Deslocamento;Av. Amazonas - Belo Horizonte-MG
+Delivery 11180;JRF3H78;23/03/2026 07:22:09;N/D;Leitura inconsistente;Av. Amazonas - Belo Horizonte-MG
+Delivery 11180;JRF3H78;99/99/2026 10:00:00;65 Km/h;Data invalida;Av. Amazonas - Belo Horizonte-MG

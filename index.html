@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analise de Velocidade da Frota</title>
+  <meta
+    name="description"
+    content="Dashboard estatico para monitoramento de velocidade, alertas e ranking da frota."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="style.css">
+  <script defer src="vendor/chart.umd.min.js"></script>
+  <script defer src="data/dashboard-data.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero panel">
+      <div class="hero-copy">
+        <p class="eyebrow">Monitoramento estatico da frota</p>
+        <h1>Analise de velocidade para operacao e alerta</h1>
+        <p class="hero-text">
+          Painel pronto para GitHub Pages, lendo apenas arquivos ja tratados dentro do projeto.
+          As regras podem ser ajustadas sem alterar a base original.
+        </p>
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-block">
+          <span class="meta-label">Dados gerados em</span>
+          <strong id="generatedAt">Carregando...</strong>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Arquivos processados</span>
+          <strong id="sourceFiles">Carregando...</strong>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Regras ativas</span>
+          <strong id="activeRules">Carregando...</strong>
+        </div>
+        <div class="meta-block">
+          <span class="meta-label">Resumo atual</span>
+          <strong id="resultsSummary">Carregando...</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="settings-grid">
+      <section class="panel filters-panel">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Filtros</p>
+            <h2>Refinar visualizacao</h2>
+          </div>
+          <button class="ghost-button" id="clearFiltersButton" type="button">Limpar filtros</button>
+        </div>
+
+        <div class="filters-grid">
+          <label>
+            <span>Placa</span>
+            <select id="plateFilter">
+              <option value="">Todas</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Motorista</span>
+            <select id="vehicleFilter">
+              <option value="">Todos</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Severidade</span>
+            <select id="severityFilter">
+              <option value="">Todas</option>
+              <option value="Normal">Normal</option>
+              <option value="Atencao">Atencao</option>
+              <option value="Critico">Critico</option>
+              <option value="Dados invalidos">Dados invalidos</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Data inicial</span>
+            <input id="startDateFilter" type="date">
+          </label>
+
+          <label>
+            <span>Data final</span>
+            <input id="endDateFilter" type="date">
+          </label>
+
+          <label class="search-field">
+            <span>Busca rapida</span>
+            <input id="searchFilter" type="search" placeholder="Placa, motorista, evento ou endereco">
+          </label>
+        </div>
+      </section>
+    </section>
+
+    <section class="stats-grid" aria-label="Indicadores principais">
+      <article class="stat-card panel">
+        <span class="stat-label">Total de registros</span>
+        <strong id="totalRecordsCard">0</strong>
+        <p>Todos os eventos presentes na base carregada.</p>
+      </article>
+
+      <article class="stat-card panel">
+        <span class="stat-label">Maior velocidade</span>
+        <strong id="topSpeedCard">0 km/h</strong>
+        <p id="topSpeedNote">Pico encontrado no conjunto filtrado.</p>
+      </article>
+
+      <article class="stat-card panel">
+        <span class="stat-label">Media de velocidade</span>
+        <strong id="averageSpeedCard">0 km/h</strong>
+        <p>Media calculada apenas com registros acima da velocidade minima de analise.</p>
+      </article>
+
+      <article class="stat-card panel">
+        <span class="stat-label">Excesso medio</span>
+        <strong id="averageExcessCard">0 km/h</strong>
+        <p>Media acima do limite da via nos eventos filtrados.</p>
+      </article>
+
+      <article class="stat-card panel">
+        <span class="stat-label">Placas monitoradas</span>
+        <strong id="monitoredPlatesCard">0</strong>
+        <p>Total de placas unicas presentes na visao atual.</p>
+      </article>
+    </section>
+
+    <section class="charts-grid">
+      <article class="panel chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Grafico</p>
+            <h2>Top placas com mais alertas</h2>
+          </div>
+          <p class="section-note">Excesso acima do limite aplicavel.</p>
+        </div>
+        <div class="chart-frame">
+          <canvas id="plateAlertsChart"></canvas>
+          <div class="chart-empty" hidden></div>
+        </div>
+      </article>
+
+      <article class="panel chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Grafico</p>
+            <h2>Top motoristas com mais alertas</h2>
+          </div>
+          <p class="section-note">Agrupado pelo nome informado na coluna MOTORISTA.</p>
+        </div>
+        <div class="chart-frame">
+          <canvas id="vehicleAlertsChart"></canvas>
+          <div class="chart-empty" hidden></div>
+        </div>
+      </article>
+
+      <article class="panel chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Grafico</p>
+            <h2>Distribuicao por severidade</h2>
+          </div>
+          <p class="section-note" id="severityChartNote">Considera velocidades a partir de 0 km/h.</p>
+        </div>
+        <div class="chart-frame">
+          <canvas id="severityChart"></canvas>
+          <div class="chart-empty" hidden></div>
+        </div>
+      </article>
+
+      <article class="panel chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Grafico</p>
+            <h2>Alertas por dia</h2>
+          </div>
+          <p class="section-note">Contagem diaria do periodo filtrado.</p>
+        </div>
+        <div class="chart-frame">
+          <canvas id="alertsByDayChart"></canvas>
+          <div class="chart-empty" hidden></div>
+        </div>
+      </article>
+
+      <article class="panel chart-card">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Grafico</p>
+            <h2>Horario de maior velocidade</h2>
+          </div>
+          <p class="section-note" id="topSpeedByHourNote">Passe o mouse na linha para ver a velocidade.</p>
+        </div>
+        <div class="chart-frame">
+          <canvas id="topSpeedByHourChart"></canvas>
+          <div class="chart-empty" hidden></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <aside class="panel ranking-panel">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Ranking</p>
+            <h2>Destaques da frota</h2>
+          </div>
+          <p class="section-note">Calculado com base na visao filtrada.</p>
+        </div>
+
+        <div class="ranking-block">
+          <h3>Placas com mais excessos</h3>
+          <ol id="plateRanking" class="ranking-list"></ol>
+        </div>
+
+        <div class="ranking-block">
+          <h3>Motoristas com maior velocidade maxima</h3>
+          <ol id="maxSpeedRanking" class="ranking-list"></ol>
+        </div>
+
+        <div class="ranking-block">
+          <h3>Motoristas com mais alertas</h3>
+          <ol id="vehicleRanking" class="ranking-list"></ol>
+        </div>
+      </aside>
+    </section>
+  </div>
+</body>
+</html>

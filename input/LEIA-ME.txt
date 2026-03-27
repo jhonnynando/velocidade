@@ -1,0 +1,11 @@
+Voce pode colocar as planilhas originais da frota aqui ou na raiz do projeto.
+
+Arquivos aceitos pelo script:
+- .csv
+- .xlsx
+- .xlsm
+
+Fluxo recomendado:
+1. Copie as planilhas para esta pasta ou para a raiz do projeto.
+2. Execute atualizar_dados.bat.
+3. Verifique os arquivos gerados na pasta /data.
