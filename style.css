@@ -152,11 +152,12 @@ body::after {
 }
 
 .content-grid {
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .settings-panel,
 .filters-panel,
+.bird-panel,
 .ranking-panel,
 .chart-card {
   padding: 24px;
@@ -397,6 +398,80 @@ select:focus {
 
 .ranking-item-footer {
   margin-top: 10px;
+}
+
+.bird-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.bird-pyramid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.bird-level {
+  width: min(var(--bird-width), 100%);
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.bird-level strong {
+  display: block;
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-size: 1rem;
+  letter-spacing: -0.03em;
+}
+
+.bird-value {
+  display: block;
+  margin-bottom: 6px;
+  font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  font-size: clamp(1.7rem, 2.4vw, 2.4rem);
+  letter-spacing: -0.05em;
+}
+
+.bird-note {
+  display: block;
+  margin-top: 6px;
+  color: rgba(22, 32, 43, 0.72);
+  font-size: 0.84rem;
+}
+
+.bird-fatal {
+  background: linear-gradient(180deg, rgba(183, 76, 67, 0.95) 0%, rgba(158, 54, 46, 0.92) 100%);
+  color: #fff7f5;
+}
+
+.bird-fatal .bird-note {
+  color: rgba(255, 247, 245, 0.8);
+}
+
+.bird-injury {
+  background: linear-gradient(180deg, rgba(214, 119, 64, 0.9) 0%, rgba(196, 97, 46, 0.9) 100%);
+  color: #fff8f1;
+}
+
+.bird-injury .bird-note {
+  color: rgba(255, 248, 241, 0.8);
+}
+
+.bird-collision {
+  background: linear-gradient(180deg, rgba(229, 187, 117, 0.92) 0%, rgba(214, 164, 79, 0.9) 100%);
+  color: #4f3516;
+}
+
+.bird-base {
+  background: linear-gradient(180deg, rgba(113, 164, 169, 0.9) 0%, rgba(86, 135, 140, 0.9) 100%);
+  color: #f5fbfb;
+}
+
+.bird-base .bird-note {
+  color: rgba(245, 251, 251, 0.84);
 }
 
 .ranking-meter {

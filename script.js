@@ -68,6 +68,7 @@ function cacheDom() {
   dom.averageSpeedCard = document.querySelector("#averageSpeedCard");
   dom.averageExcessCard = document.querySelector("#averageExcessCard");
   dom.monitoredPlatesCard = document.querySelector("#monitoredPlatesCard");
+  dom.birdPyramid = document.querySelector("#birdPyramid");
 
   dom.plateRanking = document.querySelector("#plateRanking");
   dom.maxSpeedRanking = document.querySelector("#maxSpeedRanking");
@@ -183,6 +184,7 @@ function renderDashboard() {
   updateHeaderMeta(filteredRecords, analysisRecords, alertRecords);
   renderStatCards(filteredRecords, validRecords, analysisRecords, alertRecords);
   renderCharts(analysisRecords, alertRecords);
+  renderBirdPyramid(alertRecords);
   renderRankings(analysisRecords, alertRecords);
 }
 
@@ -327,6 +329,52 @@ function renderRankings(analysisRecords, alertRecords) {
   renderRankingList(dom.plateRanking, plateRanking, "alertas");
   renderRankingList(dom.maxSpeedRanking, maxSpeedRanking, "km/h");
   renderRankingList(dom.vehicleRanking, vehicleRanking, "alertas");
+}
+
+function renderBirdPyramid(alertRecords) {
+  const observedEvents = alertRecords.length;
+  const pyramidRows = [
+    {
+      label: "Risco grave ou fatal",
+      value: observedEvents / 600,
+      note: "Topo da piramide de Bird",
+      width: "36%",
+      tone: "fatal",
+    },
+    {
+      label: "Risco de acidente com lesao",
+      value: observedEvents / 60,
+      note: "Projecao teorica para lesao",
+      width: "54%",
+      tone: "injury",
+    },
+    {
+      label: "Risco de colisao ou dano",
+      value: observedEvents / 20,
+      note: "Projecao teorica para dano material",
+      width: "72%",
+      tone: "collision",
+    },
+    {
+      label: "Eventos de excesso observados",
+      value: observedEvents,
+      note: "Base usada para a estimativa filtrada",
+      width: "90%",
+      tone: "base",
+    },
+  ];
+
+  dom.birdPyramid.innerHTML = pyramidRows
+    .map((row) => {
+      return `
+        <article class="bird-level bird-${row.tone}" style="--bird-width: ${row.width}">
+          <span class="bird-value">${escapeHtml(formatMetricValue(row.value))}</span>
+          <strong>${escapeHtml(row.label)}</strong>
+          <span class="bird-note">${escapeHtml(row.note)}</span>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function updateHeaderMeta(filteredRecords = null, analysisRecords = null, alertRecords = null) {
@@ -835,6 +883,16 @@ function formatNumber(value) {
 
 function formatSpeed(value) {
   return Number.isInteger(value) ? String(value) : value.toFixed(1).replace(".", ",");
+}
+
+function formatMetricValue(value) {
+  if (!Number.isFinite(value)) {
+    return "0";
+  }
+
+  return Number.isInteger(value)
+    ? formatNumber(value)
+    : value.toFixed(1).replace(".", ",");
 }
 
 
